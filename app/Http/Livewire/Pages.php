@@ -6,6 +6,7 @@ use App\Models\Page;
 use Illuminate\Validation\Rule;
 use Livewire\Component;
 use Livewire\WithPagination;
+use Illuminate\Support\Str;
 
 class Pages extends Component
 {
@@ -49,7 +50,7 @@ class Pages extends Component
      */
     public function updatedTitle($value)
     {
-        $this->generateSlug($value);
+        $this->slug = Str::slug($value);
     }
 
     /**
@@ -62,7 +63,7 @@ class Pages extends Component
         $this->unassignDefaultNotFoundPage();
         Page::create($this->modelData());
         $this->modalFormVisible = false;
-        $this->resetVars();
+        $this->reset();
     }
 
     /**
@@ -113,7 +114,7 @@ class Pages extends Component
     public function createShowModal()
     {
         $this->resetValidation();
-        $this->resetVars();
+        $this->reset();
         $this->modalFormVisible = true;
     }
 
@@ -125,7 +126,7 @@ class Pages extends Component
     public function updateShowModal($id)
     {
         $this->resetValidation();
-        $this->resetVars();
+        $this->reset();
         $this->modelId = $id;
         $this->modalFormVisible = true;
         $this->loadModel();
@@ -171,32 +172,6 @@ class Pages extends Component
           'is_default_home' => $this->isSetToDefaultHomePage,
           'is_default_not_found' => $this->isSetToDefaultNotFoundPage,
         ];
-    }
-
-    /**
-     * Resets all the variables
-     * to null.
-     */
-    public function resetVars()
-    {
-        $this->modelId = null;
-        $this->title = null;
-        $this->slug = null;
-        $this->content = null;
-        $this->isSetToDefaultHomePage = null;
-        $this->isSetToDefaultNotFoundPage = null;
-    }
-
-    /**
-     * Generate a url slug
-     * base on the title
-     * @param $value
-     */
-    private function generateSlug($value)
-    {
-        $process1 = str_replace(' ', '-', $value);
-        $process2 = strtolower($process1);
-        $this->slug = $process2;
     }
 
     /**
