@@ -16,6 +16,8 @@ class Pages extends Component
     public $slug;
     public $title;
     public $content;
+    public $isSetToDefaultHomePage;
+    public $isSetToDefaultNotFoundPage;
 
     /**
      * The validation rules.
@@ -56,6 +58,8 @@ class Pages extends Component
     public function create()
     {
         $this->validate();
+        $this->unassignDefaultHomePage();
+        $this->unassignDefaultNotFoundPage();
         Page::create($this->modelData());
         $this->modalFormVisible = false;
         $this->resetVars();
@@ -76,6 +80,8 @@ class Pages extends Component
     public function update()
     {
         $this->validate();
+        $this->unassignDefaultHomePage();
+        $this->unassignDefaultNotFoundPage();
         Page::find($this->modelId)->update($this->modelData());
         $this->modalFormVisible = false;
     }
@@ -88,6 +94,16 @@ class Pages extends Component
         Page::destroy($this->modelId);
         $this->modalConfirmDeleteVisible = false;
         $this->resetPage();
+    }
+
+    public function updatedIsSetToDefaultHomePage()
+    {
+        $this->isSetToDefaultNotFoundPage = null;
+    }
+
+    public function updatedIsSetToDefaultNotFoundPage()
+    {
+        $this->isSetToDefaultHomePage = null;
     }
 
     /**
@@ -136,6 +152,8 @@ class Pages extends Component
         $this->title = $data->title;
         $this->slug = $data->slug;
         $this->content = $data->content;
+        $this->isSetToDefaultHomePage = !$data->is_default_home ? null:true;
+        $this->isSetToDefaultNotFoundPage = !$data->is_default_not_found ? null:true;
     }
 
     /**
@@ -149,7 +167,9 @@ class Pages extends Component
         return [
           'title' => $this->title,
           'slug' => $this->slug,
-          'content' => $this->content
+          'content' => $this->content,
+          'is_default_home' => $this->isSetToDefaultHomePage,
+          'is_default_not_found' => $this->isSetToDefaultNotFoundPage,
         ];
     }
 
@@ -163,6 +183,8 @@ class Pages extends Component
         $this->title = null;
         $this->slug = null;
         $this->content = null;
+        $this->isSetToDefaultHomePage = null;
+        $this->isSetToDefaultNotFoundPage = null;
     }
 
     /**
@@ -175,6 +197,30 @@ class Pages extends Component
         $process1 = str_replace(' ', '-', $value);
         $process2 = strtolower($process1);
         $this->slug = $process2;
+    }
+
+    /**
+     * Unassigns the default home page in the database table
+     */
+    private function unassignDefaultHomePage()
+    {
+        if($this->isSetToDefaultHomePage != null) {
+            Page::where('is_default_home', true)->update([
+               'is_default_home' => false,
+            ]);
+        }
+    }
+
+    /**
+     * Unassigns the default not 404 page in the database table
+     */
+    private function unassignDefaultNotFoundPage()
+    {
+        if($this->isSetToDefaultNotFoundPage != null) {
+            Page::where('is_default_not_found', true)->update([
+                'is_default_not_found' => false,
+            ]);
+        }
     }
 
     /**
