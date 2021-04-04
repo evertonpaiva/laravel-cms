@@ -9,3 +9,4 @@ Repositório oficial: [github.com/jackoftraits/laravel8-with-livewire](https://g
 * [Aula 3 - Read, Update, Delete w/ Jetstream Modal (part3)](https://www.youtube.com/watch?v=G-ngqfbP5Yk&list=PLSP81gW0XjNHk2D2NREM8A80xWO19Yulj&index=3)
 * [Aula 4 - Understanding the Jetstream Modal (part4)](https://www.youtube.com/watch?v=UEJBlc7uxBE&list=PLSP81gW0XjNHk2D2NREM8A80xWO19Yulj&index=4)
 * [Aula 5 - Frontpage Component for Dynamic Pages (part5)](https://www.youtube.com/watch?v=GN5BP86VjsE&list=PLSP81gW0XjNHk2D2NREM8A80xWO19Yulj&index=5)
+* [Aula 6 - A Brief Intro To Tailwind CSS](https://www.youtube.com/watch?v=ApC723fmV2c&list=PLSP81gW0XjNHk2D2NREM8A80xWO19Yulj&index=6)
