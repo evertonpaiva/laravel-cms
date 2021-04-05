@@ -38,7 +38,7 @@
                                             {{ $item->slug }}
                                         </a>
                                     </td>
-                                    <td class="px-6 py-4 text-sm whitespace-no-wrap">{!! $item->content !!}</td>
+                                    <td class="px-6 py-4 text-sm whitespace-no-wrap">{!! \Illuminate\Support\Str::limit($item->content, 50, '...') !!}</td>
                                     <td class="px-6 py-4 text-right text-sm">
                                         <x-jet-button wire:click="updateShowModal({{ $item->id }})">
                                             {{ __('Update') }}
