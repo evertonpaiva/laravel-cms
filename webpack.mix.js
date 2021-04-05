@@ -15,7 +15,10 @@ mix.js('resources/js/app.js', 'public/js')
     .postCss('resources/css/app.css', 'public/css', [
         require('postcss-import'),
         require('tailwindcss'),
-    ]);
+    ]).browserSync({
+        proxy: 'localhost', // your domain test
+        port: 8090 // your port
+});
 
 if (mix.inProduction()) {
     mix.version();
