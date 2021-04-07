@@ -64,6 +64,10 @@ class Pages extends Component
         Page::create($this->modelData());
         $this->modalFormVisible = false;
         $this->reset();
+        $this->dispatchBrowserEvent('event-notification', [
+            'eventName' => 'New Page',
+            'eventMessage' => 'Another paga has been created!',
+        ]);
     }
 
     /**
@@ -85,6 +89,11 @@ class Pages extends Component
         $this->unassignDefaultNotFoundPage();
         Page::find($this->modelId)->update($this->modelData());
         $this->modalFormVisible = false;
+
+        $this->dispatchBrowserEvent('event-notification', [
+            'eventName' => 'Updated Page',
+            'eventMessage' => 'There is a page('. $this->modelId .') that has been updated!',
+        ]);
     }
 
     /**
@@ -95,6 +104,11 @@ class Pages extends Component
         Page::destroy($this->modelId);
         $this->modalConfirmDeleteVisible = false;
         $this->resetPage();
+
+        $this->dispatchBrowserEvent('event-notification', [
+            'eventName' => 'Deleted Page',
+            'eventMessage' => 'The page ('. $this->modelId .') has been deleted!',
+        ]);
     }
 
     public function updatedIsSetToDefaultHomePage()
@@ -196,6 +210,17 @@ class Pages extends Component
                 'is_default_not_found' => false,
             ]);
         }
+    }
+
+    /**
+     * Dispatch event
+     */
+    public function dispatchEvent()
+    {
+        $this->dispatchBrowserEvent('event-notification', [
+            'eventName' => 'Sample Event',
+            'eventMessage' => 'You have a sample event notification!',
+        ]);
     }
 
     /**
