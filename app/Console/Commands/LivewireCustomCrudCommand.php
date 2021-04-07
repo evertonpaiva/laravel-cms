@@ -53,9 +53,10 @@ class LivewireCustomCrudCommand extends Command
         $this->gatherParameters();
 
         // Generates the Livewire Class File
-        $this->generateLivewireCrudClassfile();
+        $this->generateLivewireCrudClassFile();
 
         // Generates the Livewire View File
+        $this->generateLivewireCrudViewFile();
     }
 
     /**
@@ -84,17 +85,59 @@ class LivewireCustomCrudCommand extends Command
     /**
      * Generates the CRUD class file
      */
-    protected function generateLivewireCrudClassfile()
+    protected function generateLivewireCrudClassFile()
     {
         // Set the origin and destination for the livewire class file
         $fileOrigin = base_path('/stubs/custom.livewire.crud.stub');
         $fileDestination = base_path('/app/Http/Livewire/' . $this->nameOfTheClass . '.php');
 
+        if($this->file->exists($fileDestination)) {
+            $this->info('This class file already exists:' . $this->nameOfTheClass. '.php');
+            $this->info('Aborting class file creation');
+            return false;
+        }
+
         // Get the original string content of the file
         $fileOriginalString = $this->file->get($fileOrigin);
 
+        // Replace the strings specified in the array sequentially
+        $replaceFileOriginalString = Str::replaceArray('{{}}',
+            [
+                $this->nameOfTheModelClass, // Name of the model class
+                $this->nameOfTheClass, // Name of the class
+                $this->nameOfTheModelClass, // Name of the model class
+                $this->nameOfTheModelClass, // Name of the model class
+                $this->nameOfTheModelClass, // Name of the model class
+                $this->nameOfTheModelClass, // Name of the model class
+                $this->nameOfTheModelClass, // Name of the model class
+                Str::kebab($this->nameOfTheClass), // From "FooBar" to "foo-bar"
+            ],
+            $fileOriginalString
+        );
+
         // Put the content into the destination directory
-        $this->file->put($fileDestination, $fileOriginalString);
+        $this->file->put($fileDestination, $replaceFileOriginalString);
         $this->info('Livewire class file created: '. $fileDestination);
+    }
+
+    /**
+     *
+     */
+    protected function generateLivewireCrudViewFile()
+    {
+        // Set the origin and destination for the livewire class file
+        $fileOrigin = base_path('/stubs/custom.livewire.crud.view.stub');
+        $fileDestination = base_path('/resources/views/livewire/' . Str::kebab($this->nameOfTheClass)
+            . '.blade.php');
+
+        if($this->file->exists($fileDestination)) {
+            $this->info('This view file already exists:' . Str::kebab($this->nameOfTheClass). '.blade.php');
+            $this->info('Aborting view file creation');
+            return false;
+        }
+
+        // Copy file to destination
+        $this->file->copy($fileOrigin, $fileDestination);
+        $this->info('Livewire view file created: '. $fileDestination);
     }
 }
