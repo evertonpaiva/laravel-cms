@@ -1,4 +1,9 @@
 <div class="p-6">
+    <div class="flex items-center justify-end px-4 py-3 text-right sm:px-6">
+        <x-jet-button wire:click="createShowModal">
+            {{ __('Create') }}
+        </x-jet-button>
+    </div>
 
     {{-- The data table --}}
     <div class="flex flex-col">
@@ -8,9 +13,8 @@
                     <table class="min-w-full divide-y divide-gray-200">
                         <thead>
                             <tr>
-                                <th class="px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">Name</th>
-                                <th class="px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">Email</th>
                                 <th class="px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">Role</th>
+                                <th class="px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">Route Name</th>
                                 <th class="px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider"></th>
                             </tr>
                         </thead>
@@ -18,9 +22,8 @@
                             @if ($data->count())
                                 @foreach ($data as $item)
                                     <tr>
-                                        <td class="px-6 py-2">{{ $item->name }}</td>
-                                        <td class="px-6 py-2">{{ $item->email }}</td>
                                         <td class="px-6 py-2">{{ $item->role }}</td>
+                                        <td class="px-6 py-2">{{ $item->route_name }}</td>
                                         <td class="px-6 py-2 flex justify-end">
                                             <x-jet-button wire:click="updateShowModal({{ $item->id }})">
                                                 {{ __('Update') }}
@@ -50,15 +53,10 @@
     {{-- Modal Form --}}
     <x-jet-dialog-modal wire:model="modalFormVisible">
         <x-slot name="title">
-            {{ __('Create or Update Form') }}
+            {{ __('Save User Permission') }}
         </x-slot>
 
         <x-slot name="content">
-            <div class="mt-4">
-                <x-jet-label for="name" value="{{ __('Name') }}" />
-                <x-jet-input wire:model="name" id="" class="block mt-1 w-full" type="text" />
-                @error('name') <span class="error">{{ $message }}</span> @enderror
-            </div>
             <div class="mt-4">
                 <x-jet-label for="role" value="{{ __('Role') }}" />
                 <select wire:model="role" id="" class="block appearance-none w-full bg-gray-100 border border-gray-200 text-gray-700 py-3 px-4 pr-8 round leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
@@ -68,6 +66,16 @@
                     @endforeach
                 </select>
                 @error('role') <span class="error">{{ $message }}</span> @enderror
+            </div>
+            <div class="mt-4">
+                <x-jet-label for="routeName" value="{{ __('Route Name') }}" />
+                <select wire:model="routeName" id="" class="block appearance-none w-full bg-gray-100 border border-gray-200 text-gray-700 py-3 px-4 pr-8 round leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
+                    <option value="">-- Select a Route --</option>
+                    @foreach(\App\Models\UserPermission::routeNameList() as $item)
+                        <option value="{{ $item }}">{{ $item }}</option>
+                    @endforeach
+                </select>
+                @error('routeName') <span class="error">{{ $message }}</span> @enderror
             </div>
         </x-slot>
 
@@ -91,7 +99,7 @@
     {{-- The Delete Modal --}}
     <x-jet-dialog-modal wire:model="modalConfirmDeleteVisible">
         <x-slot name="title">
-            {{ __('Delete Modal Title') }}
+            {{ __('Delete Permission') }}
         </x-slot>
 
         <x-slot name="content">

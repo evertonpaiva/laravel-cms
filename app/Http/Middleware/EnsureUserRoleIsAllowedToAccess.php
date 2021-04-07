@@ -2,6 +2,8 @@
 
 namespace App\Http\Middleware;
 
+use App\Http\Livewire\UserPermissions;
+use App\Models\UserPermission;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -23,7 +25,9 @@ class EnsureUserRoleIsAllowedToAccess
             $userRole = auth()->user()->role;
             $currentRouteName = Route::currentRouteName();
 
-            if (in_array($currentRouteName, $this->userAccessRole()[$userRole])) {
+            if ( UserPermission::isRoleHasRightToAccess($userRole, $currentRouteName)
+                || in_array($currentRouteName, $this->defaultUserAccessRole()[$userRole])
+            ) {
                 return $next($request);
             } else {
                 abort(403, 'Unauthorized action.');
@@ -34,12 +38,11 @@ class EnsureUserRoleIsAllowedToAccess
     }
 
     /**
-     * The list of accessible resource fo a specific user.
-     * We will store this in the database later.
+     * The default user access role.
      *
      * @return \string[][]
      */
-    private function userAccessRole()
+    private function defaultUserAccessRole()
     {
         return [
             'user' => [
