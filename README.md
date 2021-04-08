@@ -17,5 +17,4 @@ Repositório oficial: [github.com/jackoftraits/laravel8-with-livewire](https://g
 * [Aula 11 - Create a Livewire CRUD Generator](https://www.youtube.com/watch?v=2ZVpKXrr09Y&list=PLSP81gW0XjNHk2D2NREM8A80xWO19Yulj&index=11)
 * [Aula 12 - Finalize Dynamic User Access Roles](https://www.youtube.com/watch?v=m6THBDAmbAw&list=PLSP81gW0XjNHk2D2NREM8A80xWO19Yulj&index=12)
 * [Aula 13 - Push Notifications without Pusher](https://www.youtube.com/watch?v=IdlzVl3RDFg&list=PLSP81gW0XjNHk2D2NREM8A80xWO19Yulj&index=13)
-
-https://youtu.be/IdlzVl3RDFg?t=468
+* [Aula 14 - Create a Simple Livewire Chat](https://www.youtube.com/watch?v=Sze3SVIakxA&list=PLSP81gW0XjNHk2D2NREM8A80xWO19Yulj&index=14)
